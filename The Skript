@@ -1,0 +1,41 @@
+on death:
+    add 1 to {deaths.%victim%}
+    add 1 to {kills.%attacker%}
+    
+command /setbal <offline player> <integer>:
+    permission: op
+    trigger:
+        if arg-1 is not set:
+            send "&cProper Usage: /setbal player money" to player
+            stop
+        if arg-2 is not set:
+            send "&cProper Usage: /setbal player money" to player
+            stop
+        if arg-1 is set:
+            if arg-2 is set:
+                add arg-2 to {money.%arg-1%}
+                send "&a$%arg-2% has been added to balance of %arg-1%" to player
+                send "&a%player% has given you %arg-2%." to arg-1
+                
+command /pay <offline player> <integer>:
+    trigger:
+        if arg-1 is set:
+            if arg-2 is set:
+                if arg-2 is less than or equal to {money.%player%}:
+                    add arg-2 to {money.%arg-1%}
+                    send "&aMoney Sent!" to player
+                    send "&aYou have recieved %arg-2% dollars!"
+                    remove arg-2 from {money.%player%}
+                    stop
+                else:
+                    send "&cNot Enough Money!"
+                    stop
+                
+command /stats <offline player>:
+    trigger:
+        if arg-1 is set:
+            send "&a%arg-1% Stats" to player
+            send "&a Money: %{money.%arg-1%}%" to player
+            send "&a Kills: %{kills.%arg-1%}%" to player
+            send "&a Deaths: %{deaths.%arg-1%}%" to player
+            stop
